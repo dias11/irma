@@ -3,7 +3,6 @@ import pandas as pd
 import numpy as np
 
 #from matplotlib import cm  #%matplotlib inline
-import matplotlib.pyplot as plt
 
 import matplotlib.pyplot as plt
 import matplotlib as mpl
