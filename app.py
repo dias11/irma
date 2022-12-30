@@ -13,6 +13,9 @@ mycolor = colors.LinearSegmentedColormap.from_list('mycolor', ['#000B65','#019EE
 import pykrige.kriging_tools as kt
 from pykrige.ok import OrdinaryKriging
 
+from scipy.interpolate import RBFInterpolator
+
+from decimal import Decimal
 
 st.title('All interpolations')
 st.text("This is a web app to explore interpolations from IRMA's Data")
@@ -58,7 +61,7 @@ if uploaded_file:
     st.write(fig_WS)
     
     
-#   This Part is the plotter of Kriging Exponential Interpolation    
+#---------------------- KRIGING INTERPOLATOR---------------------   
     
     
     ok = OrdinaryKriging(
@@ -143,3 +146,157 @@ if uploaded_file:
     st.write(fig_KR_lin)
 
 
+
+
+
+#---------------------- RBF INTERPOLATOR---------------------
+
+
+
+#   This Part is the plotter of Rbf - Linear -r
+
+    cords = np.vstack((x, y)).T
+    gridx = np.linspace(20.63, 21.15 ,100)
+    gridy = np.linspace(39.00, 39.33, 100)
+    xv, yv = np.meshgrid(gridx, gridy)
+    mesh = np.array(np.meshgrid(gridx,gridy)).T.reshape(-1,2)  #makes all coordinatios combinations
+    yflat = RBFInterpolator(cords, z, kernel='linear')
+    ok = yflat(mesh)
+    
+    fig_Rbf_lin,axis_Rbf_lin = plt.subplots()
+    axis_Rbf_lin.set_title('Rbf Linear -r')
+    axis_Rbf_lin.set_xlabel('x')
+    axis_Rbf_lin.set_ylabel('y')
+    axis_Rbf_lin.set_xlim(20.63, 21.15)
+    axis_Rbf_lin.set_ylim(39.00, 39.33)
+    axis_Rbf_lin.scatter(xv, yv, 100, ok, cmap=mycolor)
+    Rbf_lin = axis_Rbf_lin.scatter(x, y, 100, z, cmap=mycolor, edgecolors='black')
+    fig_Rbf_lin.colorbar(Rbf_lin)
+    st.write(fig_Rbf_lin)
+
+
+#   This Part is the plotter of Rbf - thin_plate_spline r**2 * log(r)    
+    
+    yflat = RBFInterpolator(cords, z, kernel='thin_plate_spline')    
+    ok = yflat(mesh)
+    
+    fig_Rbf_spline,axis_Rbf_spline = plt.subplots()
+    axis_Rbf_spline.set_title('Rbf thin_plate_spline r**2 * log(r)')
+    axis_Rbf_spline.set_xlabel('x')
+    axis_Rbf_spline.set_ylabel('y')
+    axis_Rbf_spline.set_xlim(20.63, 21.15)
+    axis_Rbf_spline.set_ylim(39.00, 39.33)
+    axis_Rbf_spline.scatter(xv, yv, 100, ok, cmap=mycolor)
+    Rbf_spline = axis_Rbf_spline.scatter(x, y, 100, z, cmap=mycolor, edgecolors='black')
+    fig_Rbf_spline.colorbar(Rbf_spline)
+    st.write(fig_Rbf_spline)    
+    
+    
+    
+#   This Part is the plotter of Rbf - cubic  r**3   
+    
+    yflat = RBFInterpolator(cords, z, kernel='cubic')    
+    ok = yflat(mesh)    
+    
+    fig_Rbf_cubic,axis_Rbf_cubic = plt.subplots()
+    axis_Rbf_cubic.set_title('Rbf cubic r**3')
+    axis_Rbf_cubic.set_xlabel('x')
+    axis_Rbf_cubic.set_ylabel('y')
+    axis_Rbf_cubic.set_xlim(20.63, 21.15)
+    axis_Rbf_cubic.set_ylim(39.00, 39.33)
+    axis_Rbf_cubic.scatter(xv, yv, 100, ok, cmap=mycolor)
+    Rbf_cubic = axis_Rbf_cubic.scatter(x, y, 100, z, cmap=mycolor, edgecolors='black')
+    fig_Rbf_cubic.colorbar(Rbf_cubic)
+    st.write(fig_Rbf_cubic)        
+    
+    
+    
+    
+#   This Part is the plotter of Rbf - quintic  r**5       
+    
+    yflat = RBFInterpolator(cords, z, kernel='quintic')    
+    ok = yflat(mesh)       
+    
+    fig_Rbf_quintic,axis_Rbf_quintic = plt.subplots()
+    axis_Rbf_quintic.set_title('Rbf quintic -r**5')
+    axis_Rbf_quintic.set_xlabel('x')
+    axis_Rbf_quintic.set_ylabel('y')
+    axis_Rbf_quintic.set_xlim(20.63, 21.15)
+    axis_Rbf_quintic.set_ylim(39.00, 39.33)
+    axis_Rbf_quintic.scatter(xv, yv, 100, ok, cmap=mycolor)
+    Rbf_quintic = axis_Rbf_quintic.scatter(x, y, 100, z, cmap=mycolor, edgecolors='black')
+    fig_Rbf_quintic.colorbar(Rbf_quintic)
+    st.write(fig_Rbf_quintic)         
+    
+    
+#   This Part is the plotter of Rbf - multiquadric    
+
+    yflat = RBFInterpolator(cords, z, kernel='multiquadric', epsilon=9.5)    
+    ok = yflat(mesh)    
+    
+    fig_Rbf_multiq,axis_Rbf_multiq = plt.subplots()
+    axis_Rbf_multiq.set_title('Rbf multiquadric -sqrt(1 + r**2) epsilon=9.5')
+    axis_Rbf_multiq.set_xlabel('x')
+    axis_Rbf_multiq.set_ylabel('y')
+    axis_Rbf_multiq.set_xlim(20.63, 21.15)
+    axis_Rbf_multiq.set_ylim(39.00, 39.33)
+    axis_Rbf_multiq.scatter(xv, yv, 100, ok, cmap=mycolor)
+    Rbf_multiq = axis_Rbf_multiq.scatter(x, y, 100, z, cmap=mycolor, edgecolors='black')
+    fig_Rbf_multiq.colorbar(Rbf_multiq)
+    st.write(fig_Rbf_multiq)      
+    
+    
+#   This Part is the plotter of Rbf - inverse_multiquadric     
+    
+    yflat = RBFInterpolator(cords, z, kernel='inverse_multiquadric', epsilon=9.5)    
+    ok = yflat(mesh)   
+
+    fig_Rbf_invMult,axis_Rbf_invMult = plt.subplots()
+    axis_Rbf_invMult.set_title('Rbf inverse_multiquadric 1/sqrt(1 + r**2) epsilon=9.5')
+    axis_Rbf_invMult.set_xlabel('x')
+    axis_Rbf_invMult.set_ylabel('y')
+    axis_Rbf_invMult.set_xlim(20.63, 21.15)
+    axis_Rbf_invMult.set_ylim(39.00, 39.33)
+    axis_Rbf_invMult.scatter(xv, yv, 100, ok, cmap=mycolor)
+    Rbf_invMult = axis_Rbf_invMult.scatter(x, y, 100, z, cmap=mycolor, edgecolors='black')
+    fig_Rbf_invMult.colorbar(Rbf_invMult)
+    st.write(fig_Rbf_invMult)      
+
+
+#   This Part is the plotter of Rbf - inverse_quadratic     
+
+    yflat = RBFInterpolator(cords, z, kernel='inverse_quadratic', epsilon=5.5)    
+    ok = yflat(mesh)       
+    
+    fig_Rbf_invQuadr,axis_Rbf_invQuadr = plt.subplots()
+    axis_Rbf_invQuadr.set_title('Rbf inverse_quadratic : 1/(1 + r**2) epsilon=5.5')
+    axis_Rbf_invQuadr.set_xlabel('x')
+    axis_Rbf_invQuadr.set_ylabel('y')
+    axis_Rbf_invQuadr.set_xlim(20.63, 21.15)
+    axis_Rbf_invQuadr.set_ylim(39.00, 39.33)
+    axis_Rbf_invQuadr.scatter(xv, yv, 100, ok, cmap=mycolor)
+    Rbf_invQuadr = axis_Rbf_invQuadr.scatter(x, y, 100, z, cmap=mycolor, edgecolors='black')
+    fig_Rbf_invQuadr.colorbar(Rbf_invQuadr)
+    st.write(fig_Rbf_invQuadr)       
+    
+    
+ #   This Part is the plotter of Rbf - Gaussian 
+    
+    yflat = RBFInterpolator(cords, z, kernel='gaussian', epsilon=9.5)    
+    ok = yflat(mesh)       
+    
+    fig_Rbf_Gaus,axis_Rbf_Gaus = plt.subplots()
+    axis_Rbf_Gaus.set_title('Rbf gaussian : exp(-r**2) epsilon=9.5')
+    axis_Rbf_Gaus.set_xlabel('x')
+    axis_Rbf_Gaus.set_ylabel('y')
+    axis_Rbf_Gaus.set_xlim(20.63, 21.15)
+    axis_Rbf_Gaus.set_ylim(39.00, 39.33)
+    axis_Rbf_Gaus.scatter(xv, yv, 100, ok, cmap=mycolor)
+    Rbf_Gaus = axis_Rbf_Gaus.scatter(x, y, 100, z, cmap=mycolor, edgecolors='black')
+    fig_Rbf_Gaus.colorbar(Rbf_Gaus)
+    st.write(fig_Rbf_Gaus)      
+    
+    
+    
+    
+    
