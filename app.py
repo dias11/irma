@@ -17,20 +17,38 @@ from scipy.interpolate import RBFInterpolator
 
 from decimal import Decimal
 
-st.title('All interpolations')
-st.text("This is a web app to explore interpolations from IRMA's Data")
-uploaded_file = st.file_uploader('Upload your file here')
+st.set_page_config(layout="wide")  #Page layout is wide
 
+
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+   st.title('Interpolations tester for Irma')
+   st.write("This is a web app to explore interpolations methods using data from IRMA's meteorological stations network")
+   st.write("C.Koliopanos")
+with col2:
+   st.write("Interpolation methods")
+   st.write(" 3 Kriging interpolations: 'exponential', 'gaussian', 'linear'")
+   st.write(" 8 Radial basis function (rbf) interpolation: ‘linear’, ‘thin_plate_spline’, ‘cubic’, ‘quintic’, ‘multiquadric’, ‘inverse_multiquadric’,‘inverse_quadratic’, ‘gaussian’")
+with col3:
+   st.write("Data can be uploaded as csv file only.")
+   st.write("check out this [csv demo file](https://drive.google.com/file/d/1dCe1L60GBwWYtxSMc5Ey-LZZGPmmLrHE/view?usp=share_link)")
+   uploaded_file = st.file_uploader('Upload your file here')
+   
+   
+   
+   
 
 if uploaded_file:
 #    st.header('data statistics')
     df = pd.read_csv(uploaded_file)
 #    st.write(df.describe())
       
-    st.header('Data Header')
-    st.write(df)
+#    st.header('Data Header')
+#    st.write(df)            --------------gone down to column 16
     
-    csv_data = pd.DataFrame(df)  # read csv data into dataframe
+    csv_data = pd.DataFrame(df)  # read csv data into dataframe 
 #    st.text(csv_data)           # Print dataframe
     
     data = csv_data.to_numpy()   # Convert csv dataframe to numpy array
@@ -58,7 +76,7 @@ if uploaded_file:
     axis_WS.set_ylim(39.00, 39.33)
     WSG = axis_WS.scatter(x, y, 100, z, cmap=mycolor, edgecolors='black')
     fig_WS.colorbar(WSG)
-    st.write(fig_WS)
+#    st.write(fig_WS)
     
     
 #---------------------- KRIGING INTERPOLATOR---------------------   
@@ -87,7 +105,7 @@ if uploaded_file:
     axis_KR_exp.contourf(gridx, gridy,  zstar,100, cmap=mycolor)
     KR_exp = axis_KR_exp.scatter(x, y, 100, z, cmap=mycolor, edgecolors='black')
     fig_KR_exp.colorbar(KR_exp)
-    st.write(fig_KR_exp)
+#    st.write(fig_KR_exp)
 
     
 #   This Part is the plotter of Kriging Gaussian Interpolation  
@@ -115,7 +133,7 @@ if uploaded_file:
     axis_KR_gau.contourf(gridx, gridy,  zstar,100, cmap=mycolor)
     KR_gau = axis_KR_gau.scatter(x, y, 100, z, cmap=mycolor, edgecolors='black')
     fig_KR_gau.colorbar(KR_gau)
-    st.write(fig_KR_gau)
+#    st.write(fig_KR_gau)
 
 
 #   This Part is the plotter of Kriging linear Interpolation 
@@ -143,7 +161,7 @@ if uploaded_file:
     axis_KR_lin.contourf(gridx, gridy,  zstar,100, cmap=mycolor)
     KR_lin = axis_KR_lin.scatter(x, y, 100, z, cmap=mycolor, edgecolors='black')
     fig_KR_lin.colorbar(KR_lin)
-    st.write(fig_KR_lin)
+#    st.write(fig_KR_lin)
 
 
 
@@ -172,7 +190,7 @@ if uploaded_file:
     axis_Rbf_lin.scatter(xv, yv, 100, ok, cmap=mycolor)
     Rbf_lin = axis_Rbf_lin.scatter(x, y, 100, z, cmap=mycolor, edgecolors='black')
     fig_Rbf_lin.colorbar(Rbf_lin)
-    st.write(fig_Rbf_lin)
+#    st.write(fig_Rbf_lin)
 
 
 #   This Part is the plotter of Rbf - thin_plate_spline r**2 * log(r)    
@@ -189,7 +207,7 @@ if uploaded_file:
     axis_Rbf_spline.scatter(xv, yv, 100, ok, cmap=mycolor)
     Rbf_spline = axis_Rbf_spline.scatter(x, y, 100, z, cmap=mycolor, edgecolors='black')
     fig_Rbf_spline.colorbar(Rbf_spline)
-    st.write(fig_Rbf_spline)    
+#    st.write(fig_Rbf_spline)    
     
     
     
@@ -207,7 +225,7 @@ if uploaded_file:
     axis_Rbf_cubic.scatter(xv, yv, 100, ok, cmap=mycolor)
     Rbf_cubic = axis_Rbf_cubic.scatter(x, y, 100, z, cmap=mycolor, edgecolors='black')
     fig_Rbf_cubic.colorbar(Rbf_cubic)
-    st.write(fig_Rbf_cubic)        
+#    st.write(fig_Rbf_cubic)        
     
     
     
@@ -226,7 +244,7 @@ if uploaded_file:
     axis_Rbf_quintic.scatter(xv, yv, 100, ok, cmap=mycolor)
     Rbf_quintic = axis_Rbf_quintic.scatter(x, y, 100, z, cmap=mycolor, edgecolors='black')
     fig_Rbf_quintic.colorbar(Rbf_quintic)
-    st.write(fig_Rbf_quintic)         
+#    st.write(fig_Rbf_quintic)         
     
     
 #   This Part is the plotter of Rbf - multiquadric    
@@ -243,7 +261,7 @@ if uploaded_file:
     axis_Rbf_multiq.scatter(xv, yv, 100, ok, cmap=mycolor)
     Rbf_multiq = axis_Rbf_multiq.scatter(x, y, 100, z, cmap=mycolor, edgecolors='black')
     fig_Rbf_multiq.colorbar(Rbf_multiq)
-    st.write(fig_Rbf_multiq)      
+#    st.write(fig_Rbf_multiq)      
     
     
 #   This Part is the plotter of Rbf - inverse_multiquadric     
@@ -260,7 +278,7 @@ if uploaded_file:
     axis_Rbf_invMult.scatter(xv, yv, 100, ok, cmap=mycolor)
     Rbf_invMult = axis_Rbf_invMult.scatter(x, y, 100, z, cmap=mycolor, edgecolors='black')
     fig_Rbf_invMult.colorbar(Rbf_invMult)
-    st.write(fig_Rbf_invMult)      
+#    st.write(fig_Rbf_invMult)      
 
 
 #   This Part is the plotter of Rbf - inverse_quadratic     
@@ -277,7 +295,7 @@ if uploaded_file:
     axis_Rbf_invQuadr.scatter(xv, yv, 100, ok, cmap=mycolor)
     Rbf_invQuadr = axis_Rbf_invQuadr.scatter(x, y, 100, z, cmap=mycolor, edgecolors='black')
     fig_Rbf_invQuadr.colorbar(Rbf_invQuadr)
-    st.write(fig_Rbf_invQuadr)       
+#    st.write(fig_Rbf_invQuadr)       
     
     
  #   This Part is the plotter of Rbf - Gaussian 
@@ -294,9 +312,66 @@ if uploaded_file:
     axis_Rbf_Gaus.scatter(xv, yv, 100, ok, cmap=mycolor)
     Rbf_Gaus = axis_Rbf_Gaus.scatter(x, y, 100, z, cmap=mycolor, edgecolors='black')
     fig_Rbf_Gaus.colorbar(Rbf_Gaus)
-    st.write(fig_Rbf_Gaus)      
+#    st.write(fig_Rbf_Gaus)
+
+      
     
     
+#  ----------------- All Plots is here-------------
+
+#st.write(fig_WS)           # Wheather Stations plot
     
+#st.write(fig_KR_exp)       # Kriging Exponential plot     
+#st.write(fig_KR_gau)       # Kriging Gaussian plot 
+#st.write(fig_KR_lin)       # Kriging Linear plot  
     
+#st.write(fig_Rbf_lin)      # Rbf Linear plot  
+#st.write(fig_Rbf_spline)   # Rbf Spline plot     
+#st.write(fig_Rbf_cubic)    # Rbf Cubic plot  
     
+#st.write(fig_Rbf_quintic)  # Rbf quintic plot    
+#st.write(fig_Rbf_multiq)   # Rbf multiquadric plot  
+#st.write(fig_Rbf_invMult)  # Rbf inverse_multiquadric plot
+    
+#st.write(fig_Rbf_invQuadr) # Rbf inverse_quadratic plot    
+#st.write(fig_Rbf_Gaus)     # Rbf Gauss plot 
+
+    col16, col17 = st.columns(2) 
+    with col16:
+       st.write(df)    
+    with col17:
+       st.write(fig_WS)        
+       
+       
+       
+    col4, col5, col6 = st.columns(3)
+    with col4:
+       st.write(fig_KR_exp)
+    with col5:
+       st.write(fig_KR_gau)
+    with col6:
+       st.write(fig_KR_lin)
+       
+       
+    col7, col8, col9 = st.columns(3)
+    with col7:
+       st.write(fig_Rbf_lin)
+    with col8:
+       st.write(fig_Rbf_spline)
+    with col9:
+       st.write(fig_Rbf_cubic)       
+       
+    col10, col11, col12 = st.columns(3)       
+    with col10:
+       st.write(fig_Rbf_quintic) 
+    with col11:
+       st.write(fig_Rbf_multiq)        
+    with col12:
+       st.write(fig_Rbf_invMult)        
+       
+    col13, col14, col15 = st.columns(3)       
+    with col13:
+       st.write(fig_Rbf_invQuadr) 
+    with col14:
+       st.write(fig_Rbf_Gaus)        
+            
